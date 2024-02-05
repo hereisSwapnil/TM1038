@@ -3,97 +3,246 @@
 @tailwind utilities;
 
 .navbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 10vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 10vh;
 }
 
-.logo{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 80px;
-    padding: 10px 0 0 10px;
+.logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 120px;
+  padding: 10px 0 0 10px;
 }
 
-.logo img{
-    object-fit: cover;
+.logo img {
+  object-fit: cover;
+}
+
+.centerConsole {
+  z-index: 1;
+  padding: 10px 0 0 0;
+}
+
+.centerConsole li {
+  color: #8b8b8b;
+  margin: 30px;
+}
+
+.centerConsole li:hover {
+  color: #000;
 }
 
 .navbar ul {
-    display: flex;
-    margin-right: 20px;
-    gap: 10px;
+  display: flex;
+  margin-right: 20px;
+  gap: 10px;
 }
 
 .button {
-    position: relative;
-    transition: all 0.3s ease-in-out;
-    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
-    padding-block: 0.5rem;
-    padding-inline: 1.25rem;
-    background-color: rgb(0 107 179);
-    border-radius: 9999px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #ffff;
-    gap: 10px;
-    font-weight: bold;
-    border: 3px solid #ffffff4d;
-    outline: none;
-    overflow: hidden;
-    font-size: 15px;
+  position: relative;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+  padding-block: 0.5rem;
+  padding-inline: 1rem;
+  --active: 0;
+  --bg: radial-gradient(
+      40% 50% at center 100%,
+      hsl(270 calc(var(--active) * 97%) 72% / var(--active)),
+      transparent
+    ),
+    radial-gradient(
+      80% 100% at center 120%,
+      hsl(260 calc(var(--active) * 97%) 70% / var(--active)),
+      transparent
+    ),
+    hsl(260 calc(var(--active) * 97%) calc((var(--active) * 44%) + 12%));
+  background: var(--bg);
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffff;
+  gap: 10px;
+  font-weight: bold;
+  border: 3px solid #ffffff4d;
+  outline: none;
+  overflow: hidden;
+  font-size: 15px;
 }
 
 .icon {
-    width: 24px;
-    height: 24px;
-    transition: all 0.3s ease-in-out;
+  width: 24px;
+  height: 24px;
+  transition: all 0.3s ease-in-out;
 }
 
 .button:hover {
-    transform: scale(1.05);
-    border-color: #fff9;
+  transform: scale(1.05);
+  border-color: #fff9;
+  --active: 1;
 }
 
 .button:hover .icon {
-    transform: translate(4px);
+  transform: translate(4px);
 }
 
 .button:hover::before {
-    animation: shine 1.5s ease-out infinite;
+  animation: shine 1.5s ease-out infinite;
 }
 
 .button::before {
-    content: "";
-    position: absolute;
-    width: 100px;
-    height: 100%;
-    background-image: linear-gradient(120deg,
-            rgba(255, 255, 255, 0) 30%,
-            rgba(255, 255, 255, 0.8),
-            rgba(255, 255, 255, 0) 70%);
-    top: 0;
-    left: -100px;
-    opacity: 0.6;
+  content: "";
+  position: absolute;
+  width: 100px;
+  height: 100%;
+  background-image: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0) 30%,
+    rgba(255, 255, 255, 0.8),
+    rgba(255, 255, 255, 0) 70%
+  );
+  top: 0;
+  left: -100px;
+  opacity: 0.6;
 }
 
 @keyframes shine {
-    0% {
-        left: -100px;
-    }
+  0% {
+    left: -100px;
+  }
 
-    60% {
-        left: 100%;
-    }
+  60% {
+    left: 100%;
+  }
 
-    to {
-        left: 100%;
-    }
+  to {
+    left: 100%;
+  }
 }
 
-.button:active{
-    transform: scale(0.98);
+.button:active {
+  transform: scale(0.98);
+}
+
+.Btn {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 45px;
+  height: 45px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  position: absolute;
+  right: 26px;
+  top: 15px;
+  overflow: hidden;
+  transition-duration: 0.3s;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.199);
+  --active: 0;
+  --bg: radial-gradient(
+      40% 50% at center 100%,
+      hsl(270 calc(var(--active) * 97%) 72% / var(--active)),
+      transparent
+    ),
+    radial-gradient(
+      80% 100% at center 120%,
+      hsl(260 calc(var(--active) * 97%) 70% / var(--active)),
+      transparent
+    ),
+    hsl(260 calc(var(--active) * 97%) calc((var(--active) * 44%) + 12%));
+  background: var(--bg);
+}
+
+/* plus sign */
+.sign {
+  width: 100%;
+  transition-duration: 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sign svg {
+  width: 17px;
+}
+
+.sign svg path {
+  fill: white;
+}
+/* text */
+.text {
+  position: absolute;
+  right: 0%;
+  width: 0%;
+  opacity: 0;
+  color: white;
+  font-size: 1.2em;
+  font-weight: 600;
+  transition-duration: 0.3s;
+}
+/* hover effect on button width */
+.Btn:hover {
+  --active: 1;
+  width: 125px;
+  border-radius: 40px;
+  transition-duration: 0.3s;
+}
+
+.Btn:hover .sign {
+  width: 30%;
+  transition-duration: 0.3s;
+  padding-left: 20px;
+}
+/* hover effect button's text */
+.Btn:hover .text {
+  opacity: 1;
+  width: 70%;
+  transition-duration: 0.3s;
+  padding-right: 10px;
+}
+/* button click effect*/
+.Btn:active {
+  transform: translate(2px, 2px);
+}
+
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 85vh;
+}
+
+.details video {
+  height: 100%;
+  background-color: red;
+}
+
+.heroHeading {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  top: -5vh;
+  background-color: white;
+  font-size: 12rem;
+  font-family: "Poppins", sans-serif;
+  mix-blend-mode: lighten;
+}
+
+.heroHeading h1 span {
+  font-size: 19.5rem;
+  font-weight: 900;
+  font-family: "Poppins", sans-serif;
 }

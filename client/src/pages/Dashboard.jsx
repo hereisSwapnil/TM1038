@@ -1,13 +1,28 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import Navbar from "../components/Navbar/Navbar";
 
 export const Dashboard = () => {
   return (
     <>
-      <h1>DASHBOARD</h1>
-      <Link to="/login" className="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-        Log in
-      </Link>
+      <Navbar />
+      <div className="main">
+        <div className="details">
+          <video autoPlay muted loop>
+            <source src="./backdrop1.mp4" type="video/mp4" />
+          </video>
+          <div className="heroHeading">
+            <h1>
+              RecruitMe.<span>AI</span>
+            </h1>
+          </div>
+
+          <p>
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nisi
+            animi, explicabo obcaecati eveniet rerum repudiandae alias eaque
+            totam dolor facilis.
+          </p>
+        </div>
+      </div>
     </>
   );
 };
