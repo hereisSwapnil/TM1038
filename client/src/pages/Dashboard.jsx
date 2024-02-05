@@ -5,7 +5,22 @@ export const Dashboard = () => {
   return (
     <>
       <Navbar />
-      <h1>DASHBOARD</h1>
+      <div className="main">
+        <div className="details">
+          <video autoPlay muted loop>
+            <source src="./backdrop1.mp4" type="video/mp4" />
+          </video>
+          <div className="heroHeading">
+            <h1>
+              RecruitMe.<span>AI</span>
+            </h1>
+          </div>
+
+          <p>
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nisi animi, explicabo obcaecati eveniet rerum repudiandae alias eaque totam dolor facilis.
+          </p>
+        </div>
+      </div>
     </>
   );
 };
