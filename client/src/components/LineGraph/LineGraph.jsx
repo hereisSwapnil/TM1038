@@ -1,10 +1,10 @@
 // BarChart.js
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Line } from "react-chartjs-2";
 import { Select } from "antd";
 const { Option } = Select;
-import { useState, useEffect } from "react";
+import axios from "axios";
 import {
   Chart as ChartJS,
   LineElement,
@@ -14,7 +14,6 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import axios from "axios";
 
 const LineGraph = () => {
   ChartJS.register(
@@ -25,90 +24,82 @@ const LineGraph = () => {
     Tooltip,
     Legend
   );
+
   const [MainData, setMainData] = useState([]);
   const [Selected, setSelected] = useState("Energy");
 
   setMainData([
     {
-      _id: {
-        $oid: "659afeca3caf8293ae6c0ba7",
-      },
-      end_year: "",
-      intensity: 6,
-      sector: "Energy",
-      topic: "oil",
-      insight: "NM oil patch outlook",
-      url: "https://www.abqjournal.com/928238/nm-oil-patch-outlook.html",
-      region: "Asia",
-      start_year: "",
-      impact: "",
-      added: "January, 17 2017 01:51:10",
-      published: "January, 16 2017 00:00:00",
-      country: "Saudi Arabia",
-      relevance: 3,
-      pestle: "Industries",
-      source: "Abq",
-      title: "Oil prices could climb above $60 quite rapidly.",
-      likelihood: 2,
-      DocNumber: 346,
+      topic: "Energy",
+      accuracy: "90",
+      attempts: "10",
+    },
+    {
+      topic: "Energy",
+      accuracy: "90",
+      attempts: "10",
+    },
+    {
+      topic: "Energy",
+      accuracy: "90",
+      attempts: "10",
+    },
+    {
+      topic: "Energy",
+      accuracy: "90",
+      attempts: "10",
+    },
+    {
+      topic: "Energy",
+      accuracy: "90",
+      attempts: "10",
     },
   ]);
-
-  //   const getdata = async () => {
-  //     try {
-  //       await axios
-  //         .get("/main", {
-  //           params: {
-  //             main: Selected,
-  //             property: "sector",
-  //           },
-  //         })
-  //         .then((res) => {
-  //           if (res.data.valid) {
-  //             setMainData(res.data.data);
-  //             console.log(res.data.data.length);
-  //           }
-  //         });
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-
-  //   useEffect(() => {
-  //     getdata();
-  //   }, [Selected]);
 
   const groupedData =
     MainData &&
     MainData.reduce((accumulator, currentItem) => {
-      const { topic, intensity } = currentItem;
+      const { topic, accuracy, attempts } = currentItem;
       if (!accumulator[topic]) {
-        accumulator[topic] = { intensitySum: Number(intensity), count: 1 };
+        accumulator[topic] = {
+          accuracySum: Number(accuracy),
+          attemptsSum: Number(attempts),
+          count: 1,
+        };
       } else {
-        accumulator[topic].intensitySum += Number(intensity);
+        accumulator[topic].accuracySum += Number(accuracy);
+        accumulator[topic].attemptsSum += Number(attempts);
         accumulator[topic].count += 1;
       }
       return accumulator;
     }, {});
 
-  console.log(groupedData);
   const topics = Object.keys(groupedData);
-  const averageIntensityValues = topics.map((topic) =>
-    parseInt(groupedData[topic].intensitySum / groupedData[topic].count)
+  const averageAccuracyValues = topics.map(
+    (topic) => groupedData[topic].accuracySum / groupedData[topic].count
   );
-  console.log(averageIntensityValues);
-  console.log(topics);
+  const averageAttemptsValues = topics.map(
+    (topic) => groupedData[topic].attemptsSum / groupedData[topic].count
+  );
+
   const data = {
     labels: topics,
     datasets: [
       {
-        label: "Intensity",
-        data: averageIntensityValues,
+        label: "Accuracy",
+        data: averageAccuracyValues,
         borderColor: "aqua",
+        tension: 0.4,
+      },
+      {
+        label: "Number of Attempts",
+        data: averageAttemptsValues,
+        borderColor: "orange",
         tension: 0.4,
       },
     ],
   };
+
   const options = {
     scales: {
       x: {
@@ -120,10 +111,9 @@ const LineGraph = () => {
     },
   };
 
-  const handleSectorChange = (name, value) => {
-    setSelected(value.value);
+  const handleSectorChange = (value) => {
+    setSelected(value);
   };
-
   return (
     <>
       <div className="flex flex-col gap-4 border border-gray-200 p-4">
@@ -177,4 +167,4 @@ const LineGraph = () => {
   );
 };
 
-export default Graphs;
+export default LineGraph;
