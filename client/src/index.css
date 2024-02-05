@@ -6,15 +6,19 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 8vh;
+    height: 10vh;
 }
 
 .logo{
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 20px;
-    width: 20px;
+    width: 80px;
+    padding: 10px 0 0 10px;
+}
+
+.logo img{
+    object-fit: cover;
 }
 
 .navbar ul {
