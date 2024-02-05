@@ -1,26 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useRef } from "react";
 import Navbar from "../components/Navbar/Navbar";
-import { UserContext } from "../Context/UserContext";
-import { useNavigate } from "react-router";
-import { Loader } from "../components/Loader/Loader";
 
 export const Dashboard = () => {
-  const { user, setUser } = useContext(UserContext);
-  const [loading, setLoading] = useState(true);
-
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!user) {
-      navigate("/login");
-    }
-    setLoading(false);
-  }, [user, navigate]);
-
-  if (loading) {
-    return <Loader />;
-  }
-
+  const about = useRef(null);
   return (
     <>
       <Navbar />
@@ -34,12 +16,31 @@ export const Dashboard = () => {
               RecruitMe.<span>AI</span>
             </h1>
           </div>
+        </div>
+      </div>
+      <div className="arrowDown">
+        <button
+          class="btnBottom"
+          onClick={() => {
+            about.current.scrollIntoView({ behavior: "smooth" });
+          }}
+          type="button"
+        >
+          <strong>Get Started</strong>
+          <div id="container-stars">
+            <div id="stars"></div>
+          </div>
 
-          <p>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nisi
-            animi, explicabo obcaecati eveniet rerum repudiandae alias eaque
-            totam dolor facilis.
-          </p>
+          <div id="glow">
+            <div class="circle"></div>
+            <div class="circle"></div>
+          </div>
+        </button>
+      </div>
+      <div ref={about} id="about">
+        <div className="abtHeading">
+          <p>OUR MISSION</p>
+          <h1>The ultimate method to achieve your goals </h1>
         </div>
       </div>
     </>
