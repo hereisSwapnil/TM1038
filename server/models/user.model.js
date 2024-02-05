@@ -21,6 +21,10 @@ const userSchema = new Schema(
     skills: [{ type: String }],
     resume: String,
     links: [{ type: String }],
+    dataFilled: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

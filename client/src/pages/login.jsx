@@ -1,14 +1,13 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router";
+import { useNavigate, Link } from "react-router-dom";
 import { FaEnvelope, FaEye, FaEyeSlash, FaKey } from "react-icons/fa";
 import axios from "axios";
-import { GoEye, GoEyeClosed } from "react-icons/go";
 import { toast, Bounce } from "react-toastify";
 import { UserContext } from "../Context/UserContext";
 import { Loader } from "../components/Loader/Loader";
-import { Link } from "react-router-dom";
 import validate from "../common/validation";
+import Navbar from "../components/Navbar/Navbar";
 
 const Login = () => {
   const [error, setError] = useState({});
@@ -17,141 +16,79 @@ const Login = () => {
     email: "",
     password: "",
   });
+  const { user, setUser } = useContext(UserContext);
+  const [loading, setLoading] = useState(true);
 
-  // Function for handelling inputs
+  const navigate = useNavigate();
+
   const handleLoginInfo = (e) => {
     const { name, value } = e.target;
-    setLoginInfo((prev) => {
-      return { ...prev, [name]: value };
-    });
+    setLoginInfo((prev) => ({ ...prev, [name]: value }));
     let errObj = validate[name](value);
     if (name === "password") {
       errObj = validate.loginPassword(value);
     }
-    setError((prev) => {
-      return { ...prev, ...errObj };
-    });
+    setError((prev) => ({ ...prev, ...errObj }));
   };
 
   const passwordToggle = () => {
-    if (passwordType === "password") {
-      setPasswordType("text");
-    } else setPasswordType("password");
+    setPasswordType((prev) => (prev === "password" ? "text" : "password"));
   };
 
-  const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   auth.onAuthStateChanged((user) => {
-  //     if (user) {
-  //       console.log(user);
-  //       navigate("/");
-  //     }
-  //   });
-  // }, []);
-
-  // const handleSignIn = (e) => {
-  //   e.preventDefault();
-  //   let submitable = true;
-
-  //   Object.values(error).forEach((err) => {
-  //     if (err !== false) {
-  //       submitable = false;
-  //       return;
-  //     }
-  //   });
-  //   if (submitable) {
-  //     signInWithEmailAndPassword(auth, loginInfo.email, loginInfo.password)
-  //       .then(() => {
-  //         navigate("/");
-  //       })
-  //       .catch((err) => {
-  //         if (err == "FirebaseError: Firebase: Error (auth/wrong-password).") {
-  //           alert("Incorrect Password!");
-  //         }
-  //       });
-  //   } else {
-  //     alert("Please fill all Fields with Valid Data.");
-  //   }
-  // };
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-  const [loginError, setloginError] = useState();
-  const { user, setUser } = useContext(UserContext);
-  const [passToggle, setPassToggle] = useState("password");
-  const [loading, setLoading] = useState(false);
-
-  const togglePassword = () => {
-    if (passToggle === "password") {
-      setPassToggle("text");
-    } else {
-      setPassToggle("password");
-    }
-  };
+  console.log(loginInfo);
 
   const handleLogin = async (data) => {
-    setLoading(true);
+    console.log("Data before axios request:", data);
+
     try {
-      axios
-        .post(`${import.meta.env.VITE_BASE_URL}/user/login`, data, {
+      const res = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/user/login`,
+        data,
+        {
           withCredentials: true,
-        })
-        .then((res) => {
-          if (res.data.message === "login success") {
-            setUser(res.data.user);
-            setloginError("");
-            navigate("/");
-          } else if (res.data.message === "user not found") {
-            setloginError("User not found");
-            toast.warning("User not found!", {
-              position: "top-center",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: false,
-              pauseOnHover: false,
-              draggable: false,
-              progress: undefined,
-              theme: "light",
-              transition: Bounce,
-            });
-          } else if (res.data.message === "Invalid Credentials") {
-            setloginError("Invalid Credentials");
-            toast.error("Invalid credentials!", {
-              position: "top-center",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: false,
-              pauseOnHover: false,
-              draggable: false,
-              progress: undefined,
-              theme: "light",
-              transition: Bounce,
-            });
-          } else {
-            setloginError("Something went wrong!");
-            toast.error("An error occurred!", {
-              position: "top-center",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: false,
-              pauseOnHover: false,
-              draggable: false,
-              progress: undefined,
-              theme: "light",
-              transition: Bounce,
-            });
-          }
+        }
+      );
+
+      if (res.data.message === "login success") {
+        setUser(res.data.user);
+        setError({});
+        toast.success("Logged in successfully!", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: false,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
         });
-      setLoading(false);
+        navigate("/");
+      } else {
+        setError({ loginError: res.data.message });
+        toast.error("An error occurred!", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: false,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+      }
     } catch (error) {
       console.error(error);
-      setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (!user) {
+      navigate("/login");
+    }
+    setLoading(false);
+  }, [user, navigate]);
 
   if (loading) {
     return <Loader />;
@@ -159,9 +96,9 @@ const Login = () => {
 
   return (
     <>
-      {/* <Navbar /> */}
+      <Navbar />
       <div style={{ marginBottom: "50px" }}></div>
-      <main style={{ height: "90vh", display: "flex" }}>
+      <main style={{ height: "70vh", display: "flex" }}>
         <div
           style={{
             fontFamily: "ABeeZee",
@@ -189,11 +126,11 @@ const Login = () => {
                   marginTop: "30px",
                 }}
               >
-                <img
+                {/* <img
                   src="https://i.postimg.cc/sfGY7Q5S/Screenshot-2024-01-23-at-9-49-57-PM.png"
                   alt=""
                   style={{ width: "260px" }}
-                />
+                /> */}
               </h1>
               <div
                 style={{
@@ -208,7 +145,7 @@ const Login = () => {
                 Log in to your account
               </div>
 
-              <form
+              <div
                 style={{
                   display: "flex",
                   flexDirection: "column",
@@ -379,11 +316,11 @@ const Login = () => {
                     marginBottom: "10px",
                     fontFamily: "Quattrocento Sans, sans-serif",
                   }}
-                  onClick={handleLogin}
+                  onClick={() => handleLogin(loginInfo)}
                 >
                   Login
                 </button>
-              </form>
+              </div>
               <div
                 style={{ textAlign: "center", marginBottom: "15px" }}
                 className="dont-have-account hover:underline"

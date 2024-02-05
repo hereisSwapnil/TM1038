@@ -1,167 +1,89 @@
-import React, { useContext, useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { FaEnvelope, FaEye, FaEyeSlash, FaKey } from "react-icons/fa";
 import axios from "axios";
-import { GoEye, GoEyeClosed } from "react-icons/go";
 import { toast, Bounce } from "react-toastify";
-import { UserContext } from "../Context/UserContext";
 import { Loader } from "../components/Loader/Loader";
-import { Link } from "react-router-dom";
+import Navbar from "../components/Navbar/Navbar";
 import validate from "../common/validation";
 
-const Login = () => {
+const SignUp = () => {
   const [error, setError] = useState({});
   const [passwordType, setPasswordType] = useState("password");
-  const [loginInfo, setLoginInfo] = useState({
+  const [signUpInfo, setSignUpInfo] = useState({
+    name: "",
     email: "",
     password: "",
   });
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-  // Function for handelling inputs
-  const handleLoginInfo = (e) => {
+  const handleSignUpInfo = (e) => {
     const { name, value } = e.target;
-    setLoginInfo((prev) => {
-      return { ...prev, [name]: value };
-    });
+    setSignUpInfo((prev) => ({ ...prev, [name]: value }));
     let errObj = validate[name](value);
     if (name === "password") {
       errObj = validate.loginPassword(value);
     }
-    setError((prev) => {
-      return { ...prev, ...errObj };
-    });
+    setError((prev) => ({ ...prev, ...errObj }));
   };
 
   const passwordToggle = () => {
-    if (passwordType === "password") {
-      setPasswordType("text");
-    } else setPasswordType("password");
+    setPasswordType((prev) => (prev === "password" ? "text" : "password"));
   };
 
-  const navigate = useNavigate();
+  const handleSignUp = async () => {
+    // try {
+    console.log(signUpInfo);
+    const res = await axios.post(
+      `${import.meta.env.VITE_BASE_URL}/user/register`,
+      signUpInfo,
+      {
+        withCredentials: true,
+      }
+    );
 
-  // useEffect(() => {
-  //   auth.onAuthStateChanged((user) => {
-  //     if (user) {
-  //       console.log(user);
-  //       navigate("/");
-  //     }
-  //   });
-  // }, []);
-
-  // const handleSignIn = (e) => {
-  //   e.preventDefault();
-  //   let submitable = true;
-
-  //   Object.values(error).forEach((err) => {
-  //     if (err !== false) {
-  //       submitable = false;
-  //       return;
-  //     }
-  //   });
-  //   if (submitable) {
-  //     signInWithEmailAndPassword(auth, loginInfo.email, loginInfo.password)
-  //       .then(() => {
-  //         navigate("/");
-  //       })
-  //       .catch((err) => {
-  //         if (err == "FirebaseError: Firebase: Error (auth/wrong-password).") {
-  //           alert("Incorrect Password!");
-  //         }
-  //       });
-  //   } else {
-  //     alert("Please fill all Fields with Valid Data.");
-  //   }
-  // };
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-  const [loginError, setloginError] = useState();
-  const { user, setUser } = useContext(UserContext);
-  const [passToggle, setPassToggle] = useState("password");
-  const [loading, setLoading] = useState(false);
-
-  const togglePassword = () => {
-    if (passToggle === "password") {
-      setPassToggle("text");
+    if (res.data.message === "register success") {
+      setError({});
+      toast.success("Sign up successful! Please login.", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+      navigate("/login");
     } else {
-      setPassToggle("password");
+      setError({ signUpError: res.data.message });
+      toast.error("An error occurred!", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     }
-  };
-
-  const handleLogin = async (data) => {
-    setLoading(true);
-    try {
-      axios
-        .post(`${import.meta.env.VITE_BASE_URL}/user/login`, data, {
-          withCredentials: true,
-        })
-        .then((res) => {
-          if (res.data.message === "login success") {
-            setUser(res.data.user);
-            setloginError("");
-            navigate("/");
-          } else if (res.data.message === "user not found") {
-            setloginError("User not found");
-            toast.warning("User not found!", {
-              position: "top-center",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: false,
-              pauseOnHover: false,
-              draggable: false,
-              progress: undefined,
-              theme: "light",
-              transition: Bounce,
-            });
-          } else if (res.data.message === "Invalid Credentials") {
-            setloginError("Invalid Credentials");
-            toast.error("Invalid credentials!", {
-              position: "top-center",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: false,
-              pauseOnHover: false,
-              draggable: false,
-              progress: undefined,
-              theme: "light",
-              transition: Bounce,
-            });
-          } else {
-            setloginError("Something went wrong!");
-            toast.error("An error occurred!", {
-              position: "top-center",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: false,
-              pauseOnHover: false,
-              draggable: false,
-              progress: undefined,
-              theme: "light",
-              transition: Bounce,
-            });
-          }
-        });
-      setLoading(false);
-    } catch (error) {
-      console.error(error);
-      setLoading(false);
-    }
+    // } catch (error) {
+    //   console.error(error);
+    // }
   };
 
   if (loading) {
     return <Loader />;
   }
-
   return (
     <>
-      {/* <Navbar /> */}
+      <Navbar />
       <div style={{ marginBottom: "50px" }}></div>
-      <main style={{ height: "90vh", display: "flex" }}>
+      <main style={{ height: "70vh", display: "flex" }}>
         <div
           style={{
             fontFamily: "ABeeZee",
@@ -188,13 +110,7 @@ const Login = () => {
                   fontWeight: "bolder",
                   marginTop: "30px",
                 }}
-              >
-                <img
-                  src="https://i.postimg.cc/sfGY7Q5S/Screenshot-2024-01-23-at-9-49-57-PM.png"
-                  alt=""
-                  style={{ width: "260px" }}
-                />
-              </h1>
+              ></h1>
               <div
                 style={{
                   fontSize: "30px",
@@ -205,10 +121,10 @@ const Login = () => {
                   fontFamily: "Quattrocento Sans, sans-serif",
                 }}
               >
-                Log in to your account
+                Sign Up to your account
               </div>
 
-              <form
+              <div
                 style={{
                   display: "flex",
                   flexDirection: "column",
@@ -216,6 +132,51 @@ const Login = () => {
                   padding: "0 20%",
                 }}
               >
+                <div style={{ width: "100%", textAlign: "start" }}>
+                  <label
+                    htmlFor="name"
+                    style={{ fontFamily: "Quattrocento Sans, sans-serif" }}
+                  >
+                    Name
+                  </label>
+                  <div
+                    style={{
+                      position: "relative",
+                      width: "100%",
+                      textAlign: "start",
+                    }}
+                  >
+                    <input
+                      id="name"
+                      type="text"
+                      name="name"
+                      onChange={handleSignUpInfo}
+                      value={signUpInfo.name}
+                      placeholder="Name"
+                      required
+                      style={{
+                        width: "400px",
+                        padding: "12px",
+                        margin: "5px 0 10px",
+                        borderRadius: "6px",
+                        fontSize: "16px",
+                        border: "2px solid #d8d8d8",
+                        outline: "none",
+                        boxSizing: "border-box",
+                        paddingLeft: "35px",
+                      }}
+                    />
+                    <FaEnvelope
+                      style={{
+                        position: "absolute",
+                        top: "20px",
+                        left: "10px",
+                        color: "#66bb6a",
+                        fontSize: "16px",
+                      }}
+                    />
+                  </div>
+                </div>
                 <div style={{ width: "100%", textAlign: "start" }}>
                   <label
                     htmlFor="email"
@@ -234,8 +195,8 @@ const Login = () => {
                       id="email"
                       type="text"
                       name="email"
-                      onChange={handleLoginInfo}
-                      value={loginInfo.email}
+                      onChange={handleSignUpInfo}
+                      value={signUpInfo.email}
                       placeholder="Email"
                       required
                       style={{
@@ -302,8 +263,8 @@ const Login = () => {
                         id="password"
                         name="password"
                         type={passwordType}
-                        onChange={handleLoginInfo}
-                        value={loginInfo.password}
+                        onChange={handleSignUpInfo}
+                        value={signUpInfo.password}
                         required
                         placeholder="Password"
                         style={{
@@ -379,17 +340,17 @@ const Login = () => {
                     marginBottom: "10px",
                     fontFamily: "Quattrocento Sans, sans-serif",
                   }}
-                  onClick={handleLogin}
+                  onClick={handleSignUp}
                 >
-                  Login
+                  Sign Up
                 </button>
-              </form>
+              </div>
               <div
                 style={{ textAlign: "center", marginBottom: "15px" }}
                 className="dont-have-account hover:underline"
               >
                 <Link
-                  to="/signup"
+                  to="/login"
                   style={{
                     textDecoration: "none",
                     color: "black",
@@ -398,7 +359,7 @@ const Login = () => {
                   }}
                   className="forgot-password"
                 >
-                  Don't have an account? <b>Sign Up</b>
+                  Already have an account? <b>Sign In</b>
                 </Link>
               </div>
             </div>
@@ -437,4 +398,4 @@ const Login = () => {
     </>
   );
 };
-export default Login;
+export default SignUp;

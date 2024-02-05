@@ -58,6 +58,9 @@ const loginUser = wrapAsync(async (req, res, next) => {
         username: user.username,
         email: user.email,
         userPhoto: user.userPhoto,
+        skills: user.skills,
+        links: user.links,
+        dataFilled: user.dataFilled,
       },
       process.env.SECRET,
       {

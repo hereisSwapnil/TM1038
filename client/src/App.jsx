@@ -4,7 +4,8 @@ import { Dashboard } from "./pages/Dashboard";
 import LoginPage from "./pages/login";
 import SignUpPage from "./pages/Signup";
 import MultiStepForm from "./components/MultiStepForm/MultiStepForm";
-import Field from "./pages/Field";
+import { AssessMe } from "./pages/AssessMe";
+import { Analytics } from "./pages/Analytics";
 
 function App() {
   return (
@@ -15,7 +16,8 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/form" element={<MultiStepForm />} />
-          <Route path = "/field" element = {<Field/>} />
+          <Route path="/assess" element={<AssessMe />} />
+          <Route path="/analytics" element={<Analytics />} />
         </Routes>
       </UserContextProvider>
     </>
