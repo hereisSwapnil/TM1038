@@ -104,9 +104,50 @@ const getUser = wrapAsync(async (req, res) => {
   });
 });
 
+const updateUser = wrapAsync(async (req, res) => {
+  // res.send("update user");
+  try {
+    const { name, email, skills, links, resume, interest, userId } = req.body;
+
+    // Check if the user exists
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+    // Update user information
+    if (name) user.name = name;
+    if (email) user.email = email;
+    if (skills) user.skills = skills;
+    if (links) user.links = links;
+    if (resume) user.resume = resume;
+    if (interest) user.interest = interest;
+    user.dataFilled = true;
+
+    // Save the updated user
+    const updatedUser = await user.save();
+
+    // Remove sensitive information from the response
+    const { password: UserPassword, ...info } = updatedUser._doc;
+
+    res.status(200).json({
+      user: info,
+      message: "User updated successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({
+      message: "Update failed",
+      error: error.message,
+    });
+  }
+});
+
 module.exports = {
   registerUser,
   loginUser,
   logoutUser,
   getUser,
+  updateUser,
 };

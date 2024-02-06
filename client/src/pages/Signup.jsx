@@ -81,7 +81,7 @@ const SignUp = () => {
   }
   return (
     <>
-      <Navbar />
+      <Navbar showIcons={false} />
       <div style={{ marginBottom: "50px" }}></div>
       <main style={{ height: "70vh", display: "flex" }}>
         <div
@@ -171,7 +171,7 @@ const SignUp = () => {
                         position: "absolute",
                         top: "20px",
                         left: "10px",
-                        color: "#66bb6a",
+                        color: "blue",
                         fontSize: "16px",
                       }}
                     />
@@ -218,8 +218,8 @@ const SignUp = () => {
                         position: "absolute",
                         top: "20px",
                         left: "10px",
-                        color: "#66bb6a",
                         fontSize: "16px",
+                        color: "blue",
                       }}
                     />
                   </div>
@@ -288,7 +288,7 @@ const SignUp = () => {
                           position: "absolute",
                           top: "20px",
                           left: "10px",
-                          color: "#66bb6a",
+                          color: "blue",
                           fontSize: "16px",
                         }}
                       />
@@ -326,13 +326,12 @@ const SignUp = () => {
                   </div>
                 </div>
                 <button
-                  className="hover:bg-[#66bb6a]/90"
+                  className="bg-gradient-to-bl from-indigo-900 via-indigo-500 to-indigo-900"
                   style={{
                     width: "100%",
                     padding: "16px",
                     margin: "7px 0",
                     fontSize: "16px",
-                    backgroundColor: "#66bb6a",
                     color: "white",
                     border: "none",
                     borderRadius: "6px",
@@ -364,22 +363,14 @@ const SignUp = () => {
               </div>
             </div>
             {/* Left side of the login page */}
-            <div style={{ backgroundColor: "#ffffff", width: "50%" }}>
-              <img
-                className="anim"
-                src="https://i.postimg.cc/fLdzKL5K/55-Flat-City6-removebg-preview.png"
-                alt="meeting"
-              />
-              {/* <h1
-                style={{
-                  textAlign: "center",
-                  fontFamily: "Quattrocento Sans, sans-serif",
-                  fontSize: "25px",
-                }}
-                className="left-text bg-gradient-to-r from-green-300 via-blue-500 to-purple-600"
-              >
-                Smart Gardening, Smarter Living...
-              </h1> */}
+            <div
+              style={{
+                backgroundColor: "#ffffff",
+                width: "50%",
+                margin: "0 100px 0 0",
+              }}
+            >
+              <img className="anim" src="./recruitMe.Ai.png" alt="meeting" />
               <h1
                 className="text-transparent bg-clip-text bg-gradient-to-bl from-indigo-900 via-indigo-400 to-indigo-900 text-[80px] leading-tight anim"
                 style={{
@@ -389,7 +380,27 @@ const SignUp = () => {
                   textAlign: "center",
                 }}
               >
-                Smart Gardening, Smarter Living...
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "end",
+                  }}
+                >
+                  <div style={{ fontSize: "70px" }}>Smart</div>
+                  <div
+                    style={{
+                      margin: "0 0 0 10px",
+                      display: "flex",
+                      fontSize: "24.5px",
+                      flexDirection: "column",
+                      alignItems: "flex-start",
+                    }}
+                  >
+                    <span>Assessment</span>
+                    <span>Analysis</span>
+                  </div>
+                </div>
               </h1>
             </div>
           </div>

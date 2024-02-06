@@ -18,6 +18,9 @@ const userSchema = new Schema(
     userPhoto: {
       type: String,
     },
+    interest: {
+      type: String,
+    },
     skills: [{ type: String }],
     resume: String,
     links: [{ type: String }],
