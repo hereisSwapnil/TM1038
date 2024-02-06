@@ -6,6 +6,7 @@ import SignUpPage from "./pages/Signup";
 import MultiStepForm from "./components/MultiStepForm/MultiStepForm";
 import { AssessMe } from "./pages/AssessMe";
 import { Analytics } from "./pages/Analytics";
+import { Interview } from "./pages/Interview";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/form" element={<MultiStepForm />} />
           <Route path="/assess" element={<AssessMe />} />
           <Route path="/analytics" element={<Analytics />} />
+          <Route path="/interview" element={<Interview />} />
         </Routes>
       </UserContextProvider>
     </>

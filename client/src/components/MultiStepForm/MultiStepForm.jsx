@@ -503,7 +503,12 @@ const Step3 = ({ handleChange, formData, onChangeStep }) => {
           onChange={handleFileChange}
           className="w-full border border-gray-400 p-2"
         />
-        <button onClick={uploadFile}>Upload Resume</button>
+        <button
+          onClick={uploadFile}
+          className="mt-1 bg-blue-400 px-1 py-1 rounded-lg text-white hover:bg-blue-600 text-xs"
+        >
+          Upload Resume
+        </button>
       </div>
       {/* Progress Bar */}
       {isFileSelected && !uploadComplete && (
@@ -587,7 +592,7 @@ const MultiSelectChips = ({ options, selectedValues, onChange }) => {
           key={option.id}
           className={`bg-gray-300 px-4 py-2 rounded-lg mr-2 mb-2 cursor-pointer ${
             selectedValues.includes(option.label)
-              ? "bg-blue-500 text-white"
+              ? "bg-blue-500 text-blue-600"
               : ""
           }`}
           onClick={() => handleToggle(option.label)}

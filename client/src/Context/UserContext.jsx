@@ -12,7 +12,6 @@ export const UserContextProvider = ({ children }) => {
       const res = await axios.get(`${import.meta.env.VITE_BASE_URL}/user/get`, {
         withCredentials: true,
       });
-      console.log(res.data);
       setUser(res.data);
     } catch (error) {
       console.log(error);

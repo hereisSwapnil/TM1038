@@ -520,7 +520,7 @@ strong {
   font-weight: 100;
   position: relative;
   top: 1em;
-  text-transform: lowercase;
+  text-transform: capitalize;
 }
 
 .wave:nth-child(2),
